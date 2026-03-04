@@ -1,4 +1,4 @@
-package com.example.nutritionproject;
+package com.example.nutritionproject.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.nutritionproject.R;
 import com.example.nutritionproject.databinding.ActivityLoginBinding;
-import com.example.nutritionproject.databinding.ActivitySignupBinding;
 
 public class Login extends AppCompatActivity {
 
@@ -26,10 +26,7 @@ public class Login extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        binding.btnLogin.setOnClickListener(v -> {
-            i = new Intent(this, MainActivity.class);
-            startActivity(i);
-        });
+
 
         binding.tvSignupRedirect.setOnClickListener(v -> {
             i = new Intent(this, Signup.class);

@@ -1,22 +1,28 @@
-package com.example.nutritionproject;
+package com.example.nutritionproject.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.nutritionproject.R;
 import com.example.nutritionproject.databinding.ActivitySignupBinding;
+import com.example.nutritionproject.viewmodel.AuthViewModel;
 
 public class Signup extends AppCompatActivity {
 
     private ActivitySignupBinding binding;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AuthViewModel authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         super.onCreate(savedInstanceState);
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -27,16 +33,25 @@ public class Signup extends AppCompatActivity {
         });
         //need to fix this later:
         binding.btnSignup.setOnClickListener(v -> {
-            if (binding.edPasswordSignup.getText().toString()
-                    .equals(binding.edPasswordRepeat.getText().toString())){
-                Intent i = new Intent(this, Login.class);
-                startActivity(i);
+            String email = binding.edEmailSignup.getText().toString().trim();
+            Log.d("DEBUG",email);
+            String password = binding.edPasswordSignup.getText().toString().trim();
+            if (email.trim().isEmpty() ||binding.edPasswordSignup.toString().trim().isEmpty() ){
+                Toast.makeText(this,"Fill all fields",Toast.LENGTH_SHORT).show();
+                return;
             }
-            else {
-                Toast.makeText(this, "Your Passwords aren't matching", Toast.LENGTH_SHORT).show();
+
+            authViewModel.register(email,password);
+        });
+        authViewModel.getAuthResult().observe(this, success -> {
+            if(success != null && success) {
+                Toast.makeText(this, "Signup successful!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            } else {
+                Toast.makeText(this, "Signup failed", Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
 
