@@ -8,4 +8,8 @@
     <string name="loginRedirect">Have an account? Login</string>
     <string name="Signup">Signup</string>
     <string name="repeatPassword">Repeat Password</string>
+    <string name="btnFoodSearch">Search For Food</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search for your food</string>
+    <string name="addToList">Add To List</string>
 </resources>
