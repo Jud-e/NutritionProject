@@ -23,4 +23,8 @@ public class AuthViewModel extends ViewModel {
     public void register(String email, String password) {
         repository.register(email, password, authResult);
     }
+
+    public void login(String email,String password){
+        repository.login(email,password,authResult);
+    }
 }

@@ -13,12 +13,16 @@ public class AuthRepository {
     }
 
     public void register(String email, String password, MutableLiveData<Boolean> result){
-        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(task->{
+        mAuth.createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(task->{
             result.setValue(task.isSuccessful());
         });
     }
 
-    public void login(String email,String password){
-        mAuth.signInWithEmailAndPassword(email,password);
+    public void login(String email, String password, MutableLiveData<Boolean> result) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    result.setValue(task.isSuccessful());
+                });
     }
 }
