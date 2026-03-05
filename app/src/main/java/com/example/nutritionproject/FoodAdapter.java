@@ -15,10 +15,16 @@ import java.util.List;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
 
-    private List<FoodItem> foodList;
+    public interface OnAddClickListener {
+        void onAddClick(FoodItem item);
+    }
 
-    public FoodAdapter(List<FoodItem> foodList) {
+    private final List<FoodItem> foodList;
+    private final OnAddClickListener listener;
+
+    public FoodAdapter(List<FoodItem> foodList, OnAddClickListener listener) {
         this.foodList = foodList;
+        this.listener = listener;
     }
 
     @Override
@@ -37,6 +43,8 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 .load(item.getImageUrl())
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.ivFood);
+
+//        holder..setOnClickListener(v -> listener.onAddClick(item));
     }
 
     @Override

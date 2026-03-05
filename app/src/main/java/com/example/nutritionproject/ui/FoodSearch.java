@@ -3,19 +3,17 @@ package com.example.nutritionproject.ui;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.nutritionproject.FoodAdapter;
-import com.example.nutritionproject.R;
 import com.example.nutritionproject.databinding.ActivityFoodSearchBinding;
 import com.example.nutritionproject.viewmodel.FoodApiService;
 import com.example.nutritionproject.viewmodel.FoodItem;
 import com.example.nutritionproject.viewmodel.FoodResponse;
+import com.example.nutritionproject.viewmodel.MealViewModel;
 import com.example.nutritionproject.viewmodel.Product;
 
 import java.util.ArrayList;
@@ -31,6 +29,8 @@ public class FoodSearch extends AppCompatActivity {
 
     private ActivityFoodSearchBinding binding;
     private FoodAdapter adapter;
+    private MealViewModel mealViewModel;
+    private FoodItem lastLoggedItem;
     private List<FoodItem> foodList = new ArrayList<>();
 
     @Override
@@ -39,13 +39,40 @@ public class FoodSearch extends AppCompatActivity {
         binding = ActivityFoodSearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        adapter = new FoodAdapter(foodList);
+        // ✅ Initialize ViewModel once
+        mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
+
+        // ✅ Initialize adapter once with dialog
+        adapter = new FoodAdapter(foodList, item -> {
+            lastLoggedItem = item;
+            String[] mealTypes = {"Breakfast", "Lunch", "Dinner", "Snack"};
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Add to which meal?")
+                    .setItems(mealTypes, (dialog, which) -> {
+                        String selectedMealType = mealTypes[which].toLowerCase();
+                        mealViewModel.logMeal(item.getName(), item.getCalories(), selectedMealType);
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
 
         binding.btnSearch.setOnClickListener(v -> {
             String query = binding.etSearch.getText().toString().trim();
             if (!query.isEmpty()) searchFood(query);
+        });
+
+        // ✅ Observe log result using lastLoggedItem
+        mealViewModel.getLogResult().observe(this, success -> {
+            if (success != null && success) {
+                String name = lastLoggedItem != null ? lastLoggedItem.getName() : "Meal";
+                Toast.makeText(this, name + " logged!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Failed to log meal", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
