@@ -3,6 +3,7 @@ package com.example.nutritionproject.repository;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,7 +23,8 @@ public class MealRepository {
 
     public MealRepository() {
         db = FirebaseFirestore.getInstance();
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        userId = user != null ? user.getUid() : "test_user"; // ✅ null safe
     }
 
     public void logMeal(String name, int calories, String mealType, MutableLiveData<Boolean> result) {
@@ -66,10 +68,6 @@ public class MealRepository {
     }
 
     public void getDailyCalories(MutableLiveData<Integer> result) {
-//        getMealsForToday(mealsLiveData -> {
-//            // Observer pattern won't work directly here, so we query directly
-//        });
-
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 .format(new Date());
 

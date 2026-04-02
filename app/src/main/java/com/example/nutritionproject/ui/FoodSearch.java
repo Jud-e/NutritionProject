@@ -1,6 +1,7 @@
 package com.example.nutritionproject.ui;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -62,7 +63,10 @@ public class FoodSearch extends AppCompatActivity {
 
         binding.btnSearch.setOnClickListener(v -> {
             String query = binding.etSearch.getText().toString().trim();
-            if (!query.isEmpty()) searchFood(query);
+            if (!query.isEmpty()) {
+                showLoading();
+                searchFood(query);
+            }
         });
 
         // ✅ Observe log result using lastLoggedItem
@@ -75,6 +79,17 @@ public class FoodSearch extends AppCompatActivity {
             }
         });
     }
+    private void showLoading() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.recyclerView.setVisibility(View.GONE);
+        binding.btnSearch.setEnabled(false);
+    }
+
+    private void hideLoading() {
+        binding.progressBar.setVisibility(View.GONE);
+        binding.recyclerView.setVisibility(View.VISIBLE);
+        binding.btnSearch.setEnabled(true);
+    }
 
     private void searchFood(String query) {
         Retrofit retrofit = new Retrofit.Builder()
@@ -86,6 +101,7 @@ public class FoodSearch extends AppCompatActivity {
         service.searchFood(query, 1, 20).enqueue(new Callback<FoodResponse>() {
             @Override
             public void onResponse(Call<FoodResponse> call, Response<FoodResponse> response) {
+                runOnUiThread(() -> hideLoading());
                 if (response.isSuccessful() && response.body() != null) {
                     foodList.clear();
                     for (Product product : response.body().getProducts()) {
@@ -106,10 +122,14 @@ public class FoodSearch extends AppCompatActivity {
             @Override
             public void onFailure(Call<FoodResponse> call, Throwable t) {
                 runOnUiThread(() ->
-                        Toast.makeText(FoodSearch.this,
-                                "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show()
+                        {
+                            hideLoading();
+                            Toast.makeText(FoodSearch.this,
+                                    "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                 );
             }
+
         });
     }
 }
