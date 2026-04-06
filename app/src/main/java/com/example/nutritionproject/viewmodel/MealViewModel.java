@@ -16,8 +16,11 @@ public class MealViewModel extends AndroidViewModel {
 
     private final MealRepository mealRepository;
     private final MutableLiveData<Boolean> logResult = new MutableLiveData<>();
-    private final MutableLiveData<List<Map<String, Object>>> todayMeals = new MutableLiveData<>();
     private final MutableLiveData<Integer> dailyCalories = new MutableLiveData<>();
+    private final MutableLiveData<List<Map<String, Object>>> breakfastMeals = new MutableLiveData<>();
+    private final MutableLiveData<List<Map<String, Object>>> lunchMeals = new MutableLiveData<>();
+    private final MutableLiveData<List<Map<String, Object>>> dinnerMeals = new MutableLiveData<>();
+    private final MutableLiveData<List<Map<String, Object>>> snackMeals = new MutableLiveData<>();
 
     public MealViewModel(@NonNull Application application) {
         super(application);
@@ -28,8 +31,21 @@ public class MealViewModel extends AndroidViewModel {
         mealRepository.logMeal(name, calories, mealType, logResult);
     }
 
-    public void fetchTodayMeals() {
-        mealRepository.getMealsForToday(todayMeals);
+    public void fetchMealsByType(String mealType) {
+        switch (mealType) {
+            case "breakfast":
+                mealRepository.getMealsByType("breakfast", breakfastMeals);
+                break;
+            case "lunch":
+                mealRepository.getMealsByType("lunch", lunchMeals);
+                break;
+            case "dinner":
+                mealRepository.getMealsByType("dinner", dinnerMeals);
+                break;
+            case "snack":
+                mealRepository.getMealsByType("snack", snackMeals);
+                break;
+        }
     }
 
     public void fetchDailyCalories() {
@@ -37,6 +53,9 @@ public class MealViewModel extends AndroidViewModel {
     }
 
     public LiveData<Boolean> getLogResult() { return logResult; }
-    public LiveData<List<Map<String, Object>>> getTodayMeals() { return todayMeals; }
     public LiveData<Integer> getDailyCalories() { return dailyCalories; }
+    public LiveData<List<Map<String, Object>>> getBreakfastMeals() { return breakfastMeals; }
+    public LiveData<List<Map<String, Object>>> getLunchMeals() { return lunchMeals; }
+    public LiveData<List<Map<String, Object>>> getDinnerMeals() { return dinnerMeals; }
+    public LiveData<List<Map<String, Object>>> getSnackMeals() { return snackMeals; }
 }

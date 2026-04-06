@@ -66,6 +66,26 @@ public class MealRepository {
                 })
                 .addOnFailureListener(e -> result.setValue(null));
     }
+    public void getMealsByType(String mealType, MutableLiveData<List<Map<String, Object>>> result) {
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                .format(new Date());
+
+        db.collection("users")
+                .document(userId)
+                .collection("logs")
+                .document(date)
+                .collection("meals")
+                .whereEqualTo("mealType", mealType)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    List<Map<String, Object>> meals = new ArrayList<>();
+                    for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                        meals.add(doc.getData());
+                    }
+                    result.setValue(meals);
+                })
+                .addOnFailureListener(e -> result.setValue(null));
+    }
 
     public void getDailyCalories(MutableLiveData<Integer> result) {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
