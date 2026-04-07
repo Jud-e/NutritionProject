@@ -13,4 +13,18 @@
     <string name="search_hint">Search for your food</string>
     <string name="addToList">Add To List</string>
     <string name="btnBack">Back</string>
+    <string name="today_s_calories">Today\'s Calories</string>
+    <string name="kcal">kcal</string>
+    <string name="goal">Goal</string>
+    <string name="_7_day_summary">7-Day Summary</string>
+    <string name="breakfast">🌅 Breakfast</string>
+    <string name="lunch">☀️ Lunch</string>
+    <string name="dinner">🌙 Dinner</string>
+    <string name="snacks">🍎 Snacks</string>
+    <string name="edit_goal">Edit Goal</string>
+    <string name="search_food">Search Food</string>
+    <string name="_0">0</string>
+    <string name="log_out">Log Out</string>
+    <string name="no_items_logged_yet">No items logged yet</string>
+    <string name="_0_kcal">0 kcal</string>
 </resources>

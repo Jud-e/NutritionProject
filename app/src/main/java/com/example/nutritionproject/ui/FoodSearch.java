@@ -61,8 +61,14 @@ public class FoodSearch extends AppCompatActivity {
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
-        binding.btnBack.setOnClickListener(view -> {
-            startActivity(new Intent(this, MainActivity.class));
+//        binding.btnBack.setOnClickListener(view -> {
+//            startActivity(new Intent(this, MainActivity.class));
+//        });
+        binding.topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
         });
         binding.btnSearch.setOnClickListener(v -> {
             String query = binding.etSearch.getText().toString().trim();

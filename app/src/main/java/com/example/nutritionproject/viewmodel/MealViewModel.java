@@ -21,7 +21,14 @@ public class MealViewModel extends AndroidViewModel {
     private final MutableLiveData<List<Map<String, Object>>> lunchMeals = new MutableLiveData<>();
     private final MutableLiveData<List<Map<String, Object>>> dinnerMeals = new MutableLiveData<>();
     private final MutableLiveData<List<Map<String, Object>>> snackMeals = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, Integer>> weeklySummary = new MutableLiveData<>();
+    private final MutableLiveData<Integer> calorieGoal = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> goalSaveResult = new MutableLiveData<>();
 
+    public LiveData<Integer> getCalorieGoal() { return calorieGoal; }
+    public LiveData<Boolean> getGoalSaveResult() { return goalSaveResult; }
+    public LiveData<Map<String, Integer>> getWeeklySummary() { return weeklySummary; }
+    public void fetchWeeklySummary() { mealRepository.getWeeklySummary(weeklySummary); }
     public MealViewModel(@NonNull Application application) {
         super(application);
         mealRepository = new MealRepository();
@@ -51,6 +58,9 @@ public class MealViewModel extends AndroidViewModel {
     public void fetchDailyCalories() {
         mealRepository.getDailyCalories(dailyCalories);
     }
+
+    public void fetchCalorieGoal() { mealRepository.getCalorieGoal(calorieGoal); }
+    public void saveCalorieGoal(int goal) { mealRepository.saveCalorieGoal(goal, goalSaveResult); }
 
     public LiveData<Boolean> getLogResult() { return logResult; }
     public LiveData<Integer> getDailyCalories() { return dailyCalories; }
