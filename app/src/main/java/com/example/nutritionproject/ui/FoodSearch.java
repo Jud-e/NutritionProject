@@ -1,5 +1,6 @@
 package com.example.nutritionproject.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -60,7 +61,9 @@ public class FoodSearch extends AppCompatActivity {
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
-
+        binding.btnBack.setOnClickListener(view -> {
+            startActivity(new Intent(this, MainActivity.class));
+        });
         binding.btnSearch.setOnClickListener(v -> {
             String query = binding.etSearch.getText().toString().trim();
             if (!query.isEmpty()) {

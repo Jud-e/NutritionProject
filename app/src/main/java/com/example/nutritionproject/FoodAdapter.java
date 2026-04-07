@@ -3,6 +3,7 @@ package com.example.nutritionproject;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,7 +45,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.ivFood);
 
-//        holder..setOnClickListener(v -> listener.onAddClick(item));
+        holder.btnAdd.setOnClickListener(v -> listener.onAddClick(item));
     }
 
     @Override
@@ -53,12 +54,14 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     static class FoodViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvCalories;
         ImageView ivFood;
+        Button btnAdd;
 
         public FoodViewHolder(View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvFoodName);
             tvCalories = itemView.findViewById(R.id.tvCalories);
             ivFood = itemView.findViewById(R.id.ivFood);
+            btnAdd = itemView.findViewById(R.id.btnAddToList);
         }
     }
 }

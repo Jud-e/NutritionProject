@@ -12,4 +12,5 @@
     <string name="search">Search</string>
     <string name="search_hint">Search for your food</string>
     <string name="addToList">Add To List</string>
+    <string name="btnBack">Back</string>
 </resources>
