@@ -8,14 +8,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.nutritionproject.repository.MealRepository;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 import java.util.Map;
 
 public class MealViewModel extends AndroidViewModel {
 
-    private final MealRepository mealRepository;
+    private MealRepository mealRepository;
     private final MutableLiveData<Boolean> logResult = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> authError = new MutableLiveData<>();
     private final MutableLiveData<Integer> dailyCalories = new MutableLiveData<>();
     private final MutableLiveData<List<Map<String, Object>>> breakfastMeals = new MutableLiveData<>();
     private final MutableLiveData<List<Map<String, Object>>> lunchMeals = new MutableLiveData<>();
@@ -31,7 +34,12 @@ public class MealViewModel extends AndroidViewModel {
     public void fetchWeeklySummary() { mealRepository.getWeeklySummary(weeklySummary); }
     public MealViewModel(@NonNull Application application) {
         super(application);
-        mealRepository = new MealRepository();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            authError.setValue(true);  // signal to MainActivity to redirect — no throw
+        } else {
+            mealRepository = new MealRepository();
+        }
     }
 
     public void logMeal(String name, int calories, String mealType) {
@@ -68,4 +76,5 @@ public class MealViewModel extends AndroidViewModel {
     public LiveData<List<Map<String, Object>>> getLunchMeals() { return lunchMeals; }
     public LiveData<List<Map<String, Object>>> getDinnerMeals() { return dinnerMeals; }
     public LiveData<List<Map<String, Object>>> getSnackMeals() { return snackMeals; }
+    public LiveData<Boolean> getAuthError() { return authError; }
 }

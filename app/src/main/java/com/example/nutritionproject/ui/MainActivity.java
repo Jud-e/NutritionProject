@@ -38,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
+        mealViewModel.getAuthError().observe(this, hasError -> {
+            if (hasError != null && hasError) {
+                startActivity(new Intent(this, Login.class));
+                finish();
+            }
+        });
 
         binding.btnFoodSearch.setOnClickListener(v ->
                 startActivity(new Intent(this, FoodSearch.class))

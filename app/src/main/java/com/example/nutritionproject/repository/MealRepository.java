@@ -1,5 +1,7 @@
 package com.example.nutritionproject.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +29,10 @@ public class MealRepository {
     public MealRepository() {
         db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        userId = user != null ? user.getUid() : "test_user"; // ✅ null safe
+        if (user == null) {
+            throw new IllegalStateException("User must be logged in to access MealRepository");
+        }
+        userId = user.getUid();
     }
 
     public void logMeal(String name, int calories, String mealType, MutableLiveData<Boolean> result) {
@@ -47,7 +52,11 @@ public class MealRepository {
                 .collection("meals")
                 .add(meal)
                 .addOnSuccessListener(ref -> result.setValue(true))
-                .addOnFailureListener(e -> result.setValue(false));
+                .addOnFailureListener(e -> {
+                    Log.e("MealRepo", "Failed to log meal: " + e.getMessage());
+                    result.setValue(false);
+
+                });
     }
 
     public void getMealsForToday(MutableLiveData<List<Map<String, Object>>> result) {

@@ -44,6 +44,7 @@ public class FoodSearch extends AppCompatActivity {
         // ✅ Initialize ViewModel once
         mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
 
+
         // ✅ Initialize adapter once with dialog
         adapter = new FoodAdapter(foodList, item -> {
             lastLoggedItem = item;

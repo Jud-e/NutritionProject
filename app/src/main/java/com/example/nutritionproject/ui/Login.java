@@ -47,11 +47,11 @@ public class Login extends AppCompatActivity {
         });
         authViewModel.getAuthResult().observe(this, success -> {
             if(success != null && success) {
-                Toast.makeText(this, "Signup successful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
             } else {
-                Toast.makeText(this, "Signup failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Login failed. Check your email and password.", Toast.LENGTH_SHORT).show();
             }
         });
 
