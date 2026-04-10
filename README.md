@@ -22,5 +22,11 @@
 
 ## 📦 Getting Started
 1. Clone the repo: `git clone ...`
-2. Follow the [Configuration Guide](link-to-setup-section) to add your own `google-services.json`.
+2. Follow the [Configuration Guide](#firebase-setup-instructions) to add your own `google-services.json`.
 3. Build and Run!
+
+## Firebase Setup Instructions
+1. Go to the [Firebase Console](https://console.firebase.google.com/).
+2. Create a new Android project.
+3. Download the `google-services.json` file.
+4. Place it in the `app/` directory of this project.
