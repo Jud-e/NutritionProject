@@ -1,0 +1,13 @@
+{
+  "project_info": {
+    "project_id": "your-project-id"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:your-app-id"
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
